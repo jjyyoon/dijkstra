@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { generateVertices } from "./helpers";
+import Vertex from "./components/vertex/Vertex";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [vertices, setVertices] = useState(null);
+
+  useEffect(() => {
+    const { clientWidth, clientHeight } = document.getElementsByTagName("svg")[0];
+    setVertices(generateVertices(20, clientWidth, clientHeight));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <svg>
+        {vertices && vertices.map((vertex, index) => <Vertex key={index} vertex={vertex} />)}
+      </svg>
     </div>
   );
-}
+};
 
 export default App;
