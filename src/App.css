@@ -11,4 +11,10 @@ svg {
   width: 75%;
   height: 75%;
   border: 1px solid red;
+  overflow: visible;
+}
+
+line {
+  stroke: firebrick;
+  stroke-width: 2;
 }
