@@ -1,17 +1,19 @@
 import React from "react";
 import { generateVertices, generateGraph } from "./helpers";
 
-import Vertex from "./components/vertex/Vertex";
-import Line from "./components/line/Line";
+import FormContainer from "./components/FormContainer";
+import Vertex from "./components/Vertex";
+import Line from "./components/Line";
 
 const App = () => {
   const vertices = generateVertices(9);
   const graph = generateGraph(vertices);
 
   return (
-    <div className="text-center h-screen flex flex-col items-center justify-center">
+    <div className="h-screen flex font-body">
+      <FormContainer graph={graph} vertices={vertices} />
       {graph && (
-        <svg className="w-3/4 h-full border border-solid border-red-300 overflow-visible">
+        <svg className="w-4/5 h-full overflow-visible">
           {graph.map((source, i) =>
             source.map((target, j) => {
               if (target && i < j) {

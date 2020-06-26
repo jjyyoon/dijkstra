@@ -16,8 +16,8 @@ export const generateVertices = num => {
 
     vertices.push({
       label,
-      x: (Math.random() * (955 - 75) + 25).toFixed(2),
-      y: (Math.random() * (600 - 75) + 25).toFixed(2)
+      x: Math.random() * (955 - 75) + 25,
+      y: Math.random() * (600 - 75) + 25
     });
   }
 
@@ -71,7 +71,7 @@ export const generateGraph = vertices => {
       } else {
         const source = vertices[i];
         const target = vertices[j];
-        r = Math.hypot(target.x - source.x, target.y - source.y).toFixed(2);
+        r = Math.hypot(target.x - source.x, target.y - source.y);
       }
 
       arr.push(r);
@@ -81,4 +81,50 @@ export const generateGraph = vertices => {
   }
 
   return graph;
+};
+
+export const findTheShortestPath = (graph, source, target) => {
+  const vertices = [];
+  const result = {};
+
+  let i = 0;
+
+  while (graph.length !== vertices.length) {
+    vertices.push(alphabet[i]);
+    i = i + 1;
+  }
+
+  result[source] = { path: source, cost: 0 };
+  let current = source;
+
+  while (current !== target) {
+    result[current].visited = true;
+
+    let next = null;
+    const index = vertices.indexOf(current);
+
+    graph[index].forEach((cost, idx) => {
+      const vertex = vertices[idx];
+
+      if (cost && (!result[vertex] || !result[vertex].visited)) {
+        const totalCost = result[current].cost + graph[index][idx];
+
+        if (!result[vertex] || result[vertex].cost > totalCost) {
+          result[vertex] = { path: `${result[current].path}-${vertex}`, cost: totalCost };
+        }
+      }
+
+      if (
+        result[vertex] &&
+        !result[vertex].visited &&
+        (!next || result[next].cost > result[vertex].cost)
+      ) {
+        next = vertex;
+      }
+    });
+
+    current = next;
+  }
+
+  return `cost: ${result[target].cost}, path: ${result[target].path}`;
 };
