@@ -2,32 +2,83 @@ import React from "react";
 import { generateVertices, generateGraph } from "./helpers";
 
 import FormContainer from "./components/FormContainer";
-import Vertex from "./components/Vertex";
-import Line from "./components/Line";
+import Playground from "./components/Playground";
 
-const App = () => {
-  const vertices = generateVertices(9);
-  const graph = generateGraph(vertices);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    const { innerWidth, innerHeight } = window;
+    const vertices = generateVertices(9, innerWidth * 0.8, innerHeight);
+    const graph = generateGraph(vertices);
 
-  return (
-    <div className="h-screen flex font-body">
-      <FormContainer graph={graph} vertices={vertices} />
-      {graph && (
-        <svg className="w-4/5 h-full overflow-visible">
-          {graph.map((source, i) =>
-            source.map((target, j) => {
-              if (target && i < j) {
-                return <Line key={i + j} source={vertices[i]} target={vertices[j]} />;
-              }
-            })
-          )}
-          {vertices.map((vertex, idx) => (
-            <Vertex key={idx} vertex={vertex} />
-          ))}
-        </svg>
-      )}
-    </div>
-  );
-};
+    this.state = { vertices, graph };
+  }
+
+  setPoint = (onDrag, x, y) => {
+    const { vertices } = this.state;
+    vertices[onDrag] = { ...vertices[onDrag], x, y };
+
+    this.setState({ vertices });
+  };
+
+  setGraph = onDrag => {
+    const { vertices, graph } = this.state;
+    const { x, y } = vertices[onDrag];
+
+    graph[onDrag].forEach((dist, idx) => {
+      if (dist) {
+        const target = vertices[idx];
+        const r = Math.hypot(target.x - x, target.y - y);
+        graph[onDrag][idx] = r;
+        graph[idx][onDrag] = r;
+      }
+    });
+
+    this.setState({ graph });
+  };
+
+  setAllPoints = (widthRatio, heightRatio) => {
+    const { vertices, graph } = this.state;
+
+    vertices.forEach(vertex => {
+      vertex.x = vertex.x * widthRatio;
+      vertex.y = vertex.y * heightRatio;
+    });
+
+    graph.forEach((edges, i) => {
+      const { x, y } = vertices[i];
+
+      edges.forEach((edge, j) => {
+        if (edge && i < j) {
+          const target = vertices[j];
+          const r = Math.hypot(target.x - x, target.y - y);
+          graph[i][j] = r;
+          graph[j][i] = r;
+        }
+      });
+    });
+
+    this.setState({ vertices, graph });
+  };
+
+  render() {
+    const { vertices, graph } = this.state;
+
+    return (
+      <div className="h-screen flex font-body">
+        <FormContainer vertices={vertices} graph={graph} />
+        {graph && (
+          <Playground
+            vertices={vertices}
+            graph={graph}
+            setPoint={this.setPoint}
+            setGraph={this.setGraph}
+            setAllPoints={this.setAllPoints}
+          />
+        )}
+      </div>
+    );
+  }
+}
 
 export default App;
