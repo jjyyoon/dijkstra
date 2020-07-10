@@ -94,7 +94,7 @@ export const findTheShortestPath = (graph, source, target) => {
     i = i + 1;
   }
 
-  result[source] = { path: source, cost: 0 };
+  result[source] = { path: [source], cost: 0 };
   let current = source;
 
   while (current !== target) {
@@ -110,7 +110,7 @@ export const findTheShortestPath = (graph, source, target) => {
         const totalCost = result[current].cost + graph[index][idx];
 
         if (!result[vertex] || result[vertex].cost > totalCost) {
-          result[vertex] = { path: `${result[current].path}-${vertex}`, cost: totalCost };
+          result[vertex] = { path: [...result[current].path, vertex], cost: totalCost };
         }
       }
 
@@ -126,7 +126,7 @@ export const findTheShortestPath = (graph, source, target) => {
     current = next;
   }
 
-  return `cost: ${result[target].cost}, path: ${result[target].path}`;
+  return result;
 };
 
 export const checkBoundary = (x, y, maxX, maxY) => {

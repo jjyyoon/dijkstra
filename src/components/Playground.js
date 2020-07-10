@@ -3,6 +3,7 @@ import { checkBoundary } from "../helpers";
 
 import Vertex from "./Vertex";
 import Line from "./Line";
+import ShowResult from "./ShowResult";
 
 class Playground extends React.Component {
   constructor(props) {
@@ -78,26 +79,25 @@ class Playground extends React.Component {
   };
 
   render() {
-    const { vertices, graph } = this.props;
+    const { vertices, graph, result } = this.props;
     const { width, height } = this.state.viewBox;
 
     return (
-      <div className="w-4/5 h-full overflow-auto">
-        <svg viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}>
-          {graph.map((source, i) =>
-            source.map((target, j) => {
-              if (!target || i > j) {
-                return null;
-              }
+      <svg className="w-4/5 h-full" viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}>
+        {graph.map((source, i) =>
+          source.map((target, j) => {
+            if (!target || i > j) {
+              return null;
+            }
 
-              return <Line key={i + j} source={vertices[i]} target={vertices[j]} />;
-            })
-          )}
-          {vertices.map((vertex, idx) => (
-            <Vertex key={idx} vertex={vertex} handleMouseDown={this.handleMouseDown} />
-          ))}
-        </svg>
-      </div>
+            return <Line key={`${i}${j}`} source={vertices[i]} target={vertices[j]} />;
+          })
+        )}
+        {result && <ShowResult result={result} vertices={vertices} graph={graph} />}
+        {vertices.map((vertex, idx) => (
+          <Vertex key={idx} vertex={vertex} handleMouseDown={this.handleMouseDown} />
+        ))}
+      </svg>
     );
   }
 }

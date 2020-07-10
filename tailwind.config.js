@@ -37,7 +37,14 @@ module.exports = {
       ...breakpoints(theme("screens")),
       "9/11": "81.818182%"
     }),
-    extend: {}
+    extend: {
+      strokeWidth: {
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "5": "5"
+      }
+    }
   },
   variants: {},
   plugins: []
