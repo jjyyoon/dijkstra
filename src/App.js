@@ -7,12 +7,15 @@ import Playground from "./components/Playground";
 class App extends React.Component {
   constructor(props) {
     super(props);
+
     const { innerWidth, innerHeight } = window;
     const vertices = generateVertices(9, innerWidth * 0.8, innerHeight);
     const graph = generateGraph(vertices);
 
-    this.state = { vertices, graph };
+    this.state = { vertices, graph, result: null };
   }
+
+  setResult = (result, afterUpdate) => this.setState({ result }, afterUpdate);
 
   setPoint = (onDrag, x, y) => {
     const { vertices } = this.state;
@@ -62,15 +65,21 @@ class App extends React.Component {
   };
 
   render() {
-    const { vertices, graph } = this.state;
+    const { vertices, graph, result } = this.state;
 
     return (
       <div className="h-screen flex font-body">
-        <FormContainer vertices={vertices} graph={graph} />
+        <FormContainer
+          vertices={vertices}
+          graph={graph}
+          result={result}
+          setResult={this.setResult}
+        />
         {graph && (
           <Playground
             vertices={vertices}
             graph={graph}
+            result={result}
             setPoint={this.setPoint}
             setGraph={this.setGraph}
             setAllPoints={this.setAllPoints}
