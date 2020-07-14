@@ -56,7 +56,7 @@ const generateLinks = vertices => {
   return links;
 };
 
-export const generateGraph = vertices => {
+export const generateEdges = vertices => {
   const graph = [];
   const links = generateLinks(vertices);
 

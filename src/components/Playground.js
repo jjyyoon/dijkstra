@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+import { updateNode, updateEdges, updateGraph } from "../redux/actions";
+import { getIsResultFound } from "../redux/selectors";
 import { checkBoundary } from "../helpers";
 
 import Vertex from "./Vertex";
@@ -29,10 +32,11 @@ class Playground extends React.Component {
   }
 
   handleResize = ({ target: { innerWidth, innerHeight } }) => {
-    const { setAllPoints } = this.props;
+    const { updateGraph } = this.props;
     const { width, height } = this.state.viewBox;
 
-    setAllPoints((innerWidth * 0.8) / width, innerHeight / height);
+    updateGraph((innerWidth * 0.8) / width, innerHeight / height);
+
     this.setState({ viewBox: { width: innerWidth * 0.8, height: innerHeight } });
   };
 
@@ -63,23 +67,23 @@ class Playground extends React.Component {
 
     const point = checkBoundary(x, y, width * 0.75, height * 0.75);
 
-    const { setPoint } = this.props;
-    setPoint(onDrag, point.x, point.y);
+    const { updateNode } = this.props;
+    updateNode(onDrag, point.x, point.y);
   };
 
   handleMouseUp = () => {
     window.removeEventListener("mousemove", this.handleMouseMove);
     window.removeEventListener("mouseup", this.handleMouseUp);
 
-    const { setGraph } = this.props;
+    const { updateEdges } = this.props;
     const { onDrag } = this.state;
-    setGraph(onDrag);
+    updateEdges(onDrag);
 
     this.setState({ onDrag: null, screenCTM: null });
   };
 
   render() {
-    const { vertices, graph, result } = this.props;
+    const { vertices, graph, isResultFound } = this.props;
     const { width, height } = this.state.viewBox;
 
     return (
@@ -93,7 +97,7 @@ class Playground extends React.Component {
             return <Line key={`${i}${j}`} source={vertices[i]} target={vertices[j]} />;
           })
         )}
-        {result && <ShowResult result={result} vertices={vertices} graph={graph} />}
+        {isResultFound && <ShowResult />}
         {vertices.map((vertex, idx) => (
           <Vertex key={idx} vertex={vertex} handleMouseDown={this.handleMouseDown} />
         ))}
@@ -102,4 +106,16 @@ class Playground extends React.Component {
   }
 }
 
-export default Playground;
+const mapStateToProps = state => ({
+  vertices: state.graph.nodes,
+  graph: state.graph.edges,
+  isResultFound: getIsResultFound(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateNode: (idx, x, y) => dispatch(updateNode(idx, x, y)),
+  updateEdges: idx => dispatch(updateEdges(idx)),
+  updateGraph: (forX, forY) => dispatch(updateGraph(forX, forY))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Playground);

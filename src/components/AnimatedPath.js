@@ -7,7 +7,7 @@ const AnimatedPath = ({ no, end, source, target, edge }) => {
     if (!no) {
       drawing.current.beginElement();
     }
-  });
+  }, [no]);
 
   return (
     <path
