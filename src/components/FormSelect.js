@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { getNodeLabels } from "../redux/selectors";
 import { ReactComponent as CheveronDown } from "../assets/cheveron-down.svg";
 
 const FormSelect = ({ label, options }) => (
@@ -12,7 +14,7 @@ const FormSelect = ({ label, options }) => (
         id={label}
       >
         {options.map((option, idx) => (
-          <option key={idx}>{option.label}</option>
+          <option key={idx}>{option}</option>
         ))}
       </select>
       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -22,4 +24,6 @@ const FormSelect = ({ label, options }) => (
   </div>
 );
 
-export default FormSelect;
+const mapStateToProps = state => ({ options: getNodeLabels(state) });
+
+export default connect(mapStateToProps)(FormSelect);
