@@ -5,7 +5,7 @@ import { getIsResultFound } from "../redux/selectors";
 import { checkBoundary } from "../helpers";
 
 import Vertex from "./Vertex";
-import Line from "./Line";
+import Path from "./Path";
 import ShowResult from "./ShowResult";
 
 class Playground extends React.Component {
@@ -93,7 +93,7 @@ class Playground extends React.Component {
               return null;
             }
 
-            return <Line key={`${i}${j}`} source={vertices[i]} target={vertices[j]} />;
+            return <Path key={`${i}${j}`} id={`path${i}${j}`} from={i} to={j} />;
           })
         )}
         {isResultFound && <ShowResult />}
