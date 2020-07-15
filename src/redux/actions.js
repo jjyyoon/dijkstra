@@ -47,9 +47,8 @@ export const updateGraph = (forX, forY) => {
   return (dispatch, getState) => {
     let { nodes, edges } = getState().graph;
 
-    nodes.forEach(node => {
-      node.x = node.x * forX;
-      node.y = node.y * forY;
+    nodes.forEach((node, idx) => {
+      nodes[idx] = { ...nodes[idx], x: node.x * forX, y: node.y * forY };
     });
 
     for (let i = 0; i < edges.length - 1; i++) {

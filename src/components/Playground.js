@@ -44,8 +44,7 @@ class Playground extends React.Component {
     window.addEventListener("mousemove", this.handleMouseMove);
     window.addEventListener("mouseup", this.handleMouseUp);
 
-    const { vertices } = this.props;
-    const onDrag = vertices.findIndex(vertex => vertex.label === parentNode.id);
+    const onDrag = parentNode.id.replace("node", "");
 
     const { a, d, e, f } = parentNode.parentNode.getScreenCTM();
 
@@ -99,17 +98,17 @@ class Playground extends React.Component {
         )}
         {isResultFound && <ShowResult />}
         {vertices.map((vertex, idx) => (
-          <Vertex key={idx} vertex={vertex} handleMouseDown={this.handleMouseDown} />
+          <Vertex key={idx} idx={idx} handleMouseDown={this.handleMouseDown} />
         ))}
       </svg>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  vertices: state.graph.nodes,
-  graph: state.graph.edges,
-  isResultFound: getIsResultFound(state)
+const mapStateToProps = ({ graph: { nodes, edges }, result }) => ({
+  vertices: nodes,
+  graph: edges,
+  isResultFound: getIsResultFound(result)
 });
 
 const mapDispatchToProps = dispatch => ({
