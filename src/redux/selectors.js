@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 const getNodes = state => state.graph.nodes;
 const getEdges = state => state.graph.edges;
-const getResult = state => state.result;
+const getResult = result => result;
 
 export const getNodeLabels = createSelector([getNodes], nodes => {
   if (nodes) {
