@@ -11,7 +11,11 @@ const App = ({ generateGraph, isGraphCreated }) => {
     const { innerWidth, innerHeight } = window;
     generateGraph(9, innerWidth * 0.8, innerHeight);
 
-    return null;
+    return (
+      <div className="h-screen centre-items">
+        <div className="spinner" />
+      </div>
+    );
   }
 
   return (
