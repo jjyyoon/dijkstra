@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateNode, updateEdges, updateGraph } from "../redux/actions";
-import { getIsResultFound } from "../redux/selectors";
-import { checkBoundary } from "../helpers";
+import { updateGraph } from "../redux/actions";
+import { getNodesCount, getIsResultFound } from "../redux/selectors";
 
 import Vertex from "./Vertex";
 import Path from "./Path";
@@ -11,14 +10,8 @@ import ShowResult from "./ShowResult";
 class Playground extends React.Component {
   constructor(props) {
     super(props);
-
     const { innerWidth, innerHeight } = window;
-
-    this.state = {
-      onDrag: null,
-      screenCTM: null,
-      viewBox: { width: innerWidth * 0.8, height: innerHeight }
-    };
+    this.state = { width: innerWidth * 0.8, height: innerHeight };
   }
 
   componentDidMount() {
@@ -27,66 +20,28 @@ class Playground extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.handleResize);
-    window.removeEventListener("mousemove", this.handleMouseMove);
-    window.removeEventListener("mouseup", this.handleMouseUp);
   }
 
   handleResize = ({ target: { innerWidth, innerHeight } }) => {
     const { updateGraph } = this.props;
-    const { width, height } = this.state.viewBox;
+    const { width, height } = this.state;
 
     updateGraph((innerWidth * 0.8) / width, innerHeight / height);
 
-    this.setState({ viewBox: { width: innerWidth * 0.8, height: innerHeight } });
-  };
-
-  handleMouseDown = ({ target: { parentNode } }) => {
-    window.addEventListener("mousemove", this.handleMouseMove);
-    window.addEventListener("mouseup", this.handleMouseUp);
-
-    const onDrag = parentNode.id.replace("node", "");
-
-    const { a, d, e, f } = parentNode.parentNode.getScreenCTM();
-
-    this.setState({ onDrag, screenCTM: { a, d, e, f } });
-  };
-
-  handleMouseMove = event => {
-    event.preventDefault();
-
-    const { onDrag, screenCTM, viewBox } = this.state;
-
-    if (onDrag === null) {
-      return;
-    }
-
-    const { width, height } = viewBox;
-    const x = (event.clientX - screenCTM.e) / screenCTM.a;
-    const y = (event.clientY - screenCTM.f) / screenCTM.d;
-
-    const point = checkBoundary(x, y, width * 0.75, height * 0.75);
-
-    const { updateNode } = this.props;
-    updateNode(onDrag, point.x, point.y);
-  };
-
-  handleMouseUp = () => {
-    window.removeEventListener("mousemove", this.handleMouseMove);
-    window.removeEventListener("mouseup", this.handleMouseUp);
-
-    const { updateEdges } = this.props;
-    const { onDrag } = this.state;
-    updateEdges(onDrag);
-
-    this.setState({ onDrag: null, screenCTM: null });
+    this.setState({ width: innerWidth * 0.8, height: innerHeight });
   };
 
   render() {
-    const { vertices, graph, isResultFound } = this.props;
-    const { width, height } = this.state.viewBox;
+    const { graph, nodeCount, isResultFound } = this.props;
+    const { width, height } = this.state;
+    const keys = [...Array(nodeCount).keys()];
 
     return (
-      <svg className="w-4/5 h-full" viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}>
+      <svg
+        id="playground"
+        className="w-4/5 h-full"
+        viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}
+      >
         {graph.map((source, i) =>
           source.map((target, j) => {
             if (!target || i > j) {
@@ -97,8 +52,8 @@ class Playground extends React.Component {
           })
         )}
         {isResultFound && <ShowResult />}
-        {vertices.map((vertex, idx) => (
-          <Vertex key={idx} idx={idx} handleMouseDown={this.handleMouseDown} />
+        {keys.map(key => (
+          <Vertex key={key} idx={key} width={width} height={height} />
         ))}
       </svg>
     );
@@ -106,14 +61,12 @@ class Playground extends React.Component {
 }
 
 const mapStateToProps = ({ graph: { nodes, edges }, result }) => ({
-  vertices: nodes,
   graph: edges,
+  nodeCount: getNodesCount(nodes),
   isResultFound: getIsResultFound(result)
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateNode: (idx, x, y) => dispatch(updateNode(idx, x, y)),
-  updateEdges: idx => dispatch(updateEdges(idx)),
   updateGraph: (forX, forY) => dispatch(updateGraph(forX, forY))
 });
 
