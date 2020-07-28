@@ -12,10 +12,10 @@ export const generateGraph = (num, maxX, maxY) => {
 
 export const updateNode = (idx, x, y) => {
   return (dispatch, getState) => {
-    const newNodes = [...getState().graph.nodes];
-    newNodes[idx] = { ...newNodes[idx], x, y };
+    const { nodes } = getState().graph;
+    nodes[idx] = { ...nodes[idx], x, y };
 
-    return dispatch({ type: "UPDATE_NODE", nodes: newNodes });
+    return dispatch({ type: "UPDATE_NODE", nodes });
   };
 };
 
