@@ -24,6 +24,6 @@ const FormSelect = ({ label, options }) => (
   </div>
 );
 
-const mapStateToProps = state => ({ options: getNodeLabels(state) });
+const mapStateToProps = ({ graph: { nodes } }) => ({ options: getNodeLabels(nodes) });
 
 export default connect(mapStateToProps)(FormSelect);
