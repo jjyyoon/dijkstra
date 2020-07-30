@@ -21,6 +21,13 @@ module.exports = {
       mono: ["Menlo", "Monaco", "Consolas", '"Liberation Mono"', '"Courier New"', "monospace"],
       body: ["Balsamiq Sans", "cursive"]
     },
+    height: theme => ({
+      auto: "auto",
+      ...theme("spacing"),
+      full: "100%",
+      screen: "100vh",
+      "1/10": "10%"
+    }),
     maxWidth: (theme, { breakpoints }) => ({
       none: "none",
       xs: "20rem",
@@ -35,7 +42,7 @@ module.exports = {
       "6xl": "72rem",
       full: "100%",
       ...breakpoints(theme("screens")),
-      "9/11": "81.818182%"
+      "7/8": "87.5%"
     }),
     extend: {
       strokeWidth: {

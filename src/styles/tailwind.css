@@ -1,15 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400&display=swap");
 
 @tailwind base;
 
-h1 {
-    @apply text-3xl;
-}
-h2 {
-    @apply text-xl;
-}
+h1,
+h2,
 h3 {
-    @apply text-lg;
+    @apply font-bold;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.17em;
+}
+
+button {
+    @apply py-2 px-4 rounded;
+}
+
+button:focus {
+    @apply outline-none;
 }
 
 .centre-items {
