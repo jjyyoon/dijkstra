@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { updateGraph, resetResult } from "../redux/actions";
 import { getNodesCount } from "../redux/selectors";
 
-import Vertex from "./Vertex";
+import Node from "./Node";
 import Path from "./Path";
 import ShowResult from "./ShowResult";
 
@@ -33,7 +33,7 @@ class Playground extends React.Component {
   };
 
   render() {
-    const { graph, nodeCount, shown } = this.props;
+    const { edges, nodeCount, shown } = this.props;
     const { width, height } = this.state;
     const keys = [...Array(nodeCount).keys()];
 
@@ -43,7 +43,7 @@ class Playground extends React.Component {
         className="absolute bottom-0"
         viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}
       >
-        {graph.map((source, i) =>
+        {edges.map((source, i) =>
           source.map((target, j) => {
             if (!target || i > j) {
               return null;
@@ -54,7 +54,7 @@ class Playground extends React.Component {
         )}
         {shown && <ShowResult />}
         {keys.map(key => (
-          <Vertex key={key} idx={key} width={width} height={height} />
+          <Node key={key} idx={key} width={width} height={height} />
         ))}
       </svg>
     );
@@ -62,7 +62,7 @@ class Playground extends React.Component {
 }
 
 const mapStateToProps = ({ graph: { nodes, edges }, result: { shown } }) => ({
-  graph: edges,
+  edges,
   nodeCount: getNodesCount(nodes),
   shown
 });

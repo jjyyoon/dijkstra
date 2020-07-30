@@ -1,7 +1,7 @@
-import { generateVertices, generateEdges, findTheShortestPath } from "../helpers";
+import { generateNodes, generateEdges, findTheShortestPath } from "../helpers";
 
 export const generateGraph = (num, maxX, maxY) => {
-  const nodes = generateVertices(num, maxX, maxY);
+  const nodes = generateNodes(num, maxX, maxY);
 
   return {
     type: "GENERATE_GRAPH",
