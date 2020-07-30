@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateGraph } from "../redux/actions";
+import { updateGraph, resetResult } from "../redux/actions";
 import { getNodesCount } from "../redux/selectors";
 
 import Vertex from "./Vertex";
@@ -23,9 +23,10 @@ class Playground extends React.Component {
   }
 
   handleResize = ({ target: { innerWidth, innerHeight } }) => {
-    const { updateGraph } = this.props;
-    const { width, height } = this.state;
+    const { resetResult, updateGraph } = this.props;
+    resetResult();
 
+    const { width, height } = this.state;
     updateGraph((innerWidth * 0.8) / width, (innerHeight * 0.9) / height);
 
     this.setState({ width: innerWidth * 0.8, height: innerHeight * 0.9 });
@@ -67,7 +68,8 @@ const mapStateToProps = ({ graph: { nodes, edges }, result: { shown } }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateGraph: (forX, forY) => dispatch(updateGraph(forX, forY))
+  updateGraph: (forX, forY) => dispatch(updateGraph(forX, forY)),
+  resetResult: () => dispatch(resetResult())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playground);

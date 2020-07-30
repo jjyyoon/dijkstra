@@ -68,4 +68,12 @@ export const setResult = (source, target) => {
   };
 };
 
+export const resetResult = () => {
+  return (dispatch, getState) => {
+    if (getState().result.path) {
+      return dispatch({ type: "RESET_RESULT" });
+    }
+  };
+};
+
 export const toggleResultShown = () => ({ type: "TOGGLE_RESULT_SHOWN" });
