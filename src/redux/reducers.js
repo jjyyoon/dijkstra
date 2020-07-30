@@ -24,10 +24,19 @@ const graph = (state = { nodes: null, edges: null }, action) => {
   }
 };
 
-const result = (state = null, action) => {
+const result = (state = { path: null, shown: false }, action) => {
   switch (action.type) {
     case "SET_RESULT":
-      return action.result;
+      return {
+        ...state,
+        path: action.path,
+        shown: true
+      };
+    case "TOGGLE_RESULT_SHOWN":
+      return {
+        ...state,
+        shown: !state.shown
+      };
     default:
       return state;
   }

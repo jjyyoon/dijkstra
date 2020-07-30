@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { updateNode, updateEdges } from "../redux/actions";
-import { getIsResultFound } from "../redux/selectors";
+import { getIsPathFound } from "../redux/selectors";
 import { checkBoundary } from "../helpers";
 
 class Vertex extends React.Component {
@@ -61,14 +61,14 @@ class Vertex extends React.Component {
     const {
       idx,
       vertex: { label, x, y },
-      isResultFound
+      isPathFound
     } = this.props;
 
     return (
       <g
         id={"node" + idx}
         transform={`translate(${x}, ${y})`}
-        onMouseDown={isResultFound ? null : this.handleMouseDown}
+        onMouseDown={isPathFound ? null : this.handleMouseDown}
       >
         <circle r="5" />
         <text dy={y > 100 ? 15 : -5}>{`${label} (${x.toFixed(2)}, ${y.toFixed(2)})`}</text>
@@ -77,9 +77,9 @@ class Vertex extends React.Component {
   }
 }
 
-const mapStateToProps = ({ graph: { nodes }, result }, { idx }) => ({
+const mapStateToProps = ({ graph: { nodes }, result: { path } }, { idx }) => ({
   vertex: nodes[idx],
-  isResultFound: getIsResultFound(result)
+  isPathFound: getIsPathFound(path)
 });
 
 const mapDispatchToProps = dispatch => ({

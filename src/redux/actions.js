@@ -64,6 +64,8 @@ export const setResult = (source, target) => {
     const { edges } = getState().graph;
     const result = findTheShortestPath(edges, source, target);
 
-    return dispatch({ type: "SET_RESULT", result: result[target].path });
+    return dispatch({ type: "SET_RESULT", path: result[target].path });
   };
 };
+
+export const toggleResultShown = () => ({ type: "TOGGLE_RESULT_SHOWN" });

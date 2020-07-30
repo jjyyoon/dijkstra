@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { updateGraph } from "../redux/actions";
-import { getNodesCount, getIsResultFound } from "../redux/selectors";
+import { getNodesCount } from "../redux/selectors";
 
 import Vertex from "./Vertex";
 import Path from "./Path";
@@ -11,7 +11,7 @@ class Playground extends React.Component {
   constructor(props) {
     super(props);
     const { innerWidth, innerHeight } = window;
-    this.state = { width: innerWidth * 0.8, height: innerHeight };
+    this.state = { width: innerWidth * 0.8, height: innerHeight * 0.9 };
   }
 
   componentDidMount() {
@@ -26,20 +26,20 @@ class Playground extends React.Component {
     const { updateGraph } = this.props;
     const { width, height } = this.state;
 
-    updateGraph((innerWidth * 0.8) / width, innerHeight / height);
+    updateGraph((innerWidth * 0.8) / width, (innerHeight * 0.9) / height);
 
-    this.setState({ width: innerWidth * 0.8, height: innerHeight });
+    this.setState({ width: innerWidth * 0.8, height: innerHeight * 0.9 });
   };
 
   render() {
-    const { graph, nodeCount, isResultFound } = this.props;
+    const { graph, nodeCount, shown } = this.props;
     const { width, height } = this.state;
     const keys = [...Array(nodeCount).keys()];
 
     return (
       <svg
         id="playground"
-        className="w-4/5 h-full"
+        className="absolute bottom-0"
         viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}
       >
         {graph.map((source, i) =>
@@ -51,7 +51,7 @@ class Playground extends React.Component {
             return <Path key={`${i}${j}`} id={`path${i}${j}`} from={i} to={j} />;
           })
         )}
-        {isResultFound && <ShowResult />}
+        {shown && <ShowResult />}
         {keys.map(key => (
           <Vertex key={key} idx={key} width={width} height={height} />
         ))}
@@ -60,10 +60,10 @@ class Playground extends React.Component {
   }
 }
 
-const mapStateToProps = ({ graph: { nodes, edges }, result }) => ({
+const mapStateToProps = ({ graph: { nodes, edges }, result: { shown } }) => ({
   graph: edges,
   nodeCount: getNodesCount(nodes),
-  isResultFound: getIsResultFound(result)
+  shown
 });
 
 const mapDispatchToProps = dispatch => ({
