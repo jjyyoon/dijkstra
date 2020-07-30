@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { setResult } from "../redux/actions";
+import { setResult, resetResult } from "../redux/actions";
 
 import FormSelect from "./FormSelect";
 import CustomButton from "./CustomButton";
 import { ReactComponent as ExclamationOutline } from "../assets/exclamation-outline.svg";
 
-const SelectNodes = ({ setResult }) => {
+const SelectNodes = ({ setResult, resetResult }) => {
   const [error, setError] = useState(false);
 
   const handleSubmit = event => {
@@ -16,7 +16,11 @@ const SelectNodes = ({ setResult }) => {
     const target = event.target.target.value;
 
     if (source === target) {
-      setError(true);
+      if (!error) {
+        setError(true);
+        resetResult();
+      }
+
       return;
     }
 
@@ -43,7 +47,8 @@ const SelectNodes = ({ setResult }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  setResult: (source, target) => dispatch(setResult(source, target))
+  setResult: (source, target) => dispatch(setResult(source, target)),
+  resetResult: () => dispatch(resetResult())
 });
 
 export default connect(null, mapDispatchToProps)(SelectNodes);

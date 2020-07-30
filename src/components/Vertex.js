@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateNode, updateEdges } from "../redux/actions";
-import { getIsPathFound } from "../redux/selectors";
+import { updateNode, updateEdges, resetResult } from "../redux/actions";
 import { checkBoundary } from "../helpers";
 
 class Vertex extends React.Component {
@@ -20,6 +19,9 @@ class Vertex extends React.Component {
   }
 
   handleMouseDown = () => {
+    const { resetResult } = this.props;
+    resetResult();
+
     window.addEventListener("mousemove", this.handleMouseMove);
     window.addEventListener("mouseup", this.handleMouseUp);
 
@@ -60,16 +62,11 @@ class Vertex extends React.Component {
   render() {
     const {
       idx,
-      vertex: { label, x, y },
-      isPathFound
+      vertex: { label, x, y }
     } = this.props;
 
     return (
-      <g
-        id={"node" + idx}
-        transform={`translate(${x}, ${y})`}
-        onMouseDown={isPathFound ? null : this.handleMouseDown}
-      >
+      <g id={"node" + idx} transform={`translate(${x}, ${y})`} onMouseDown={this.handleMouseDown}>
         <circle r="5" />
         <text dy={y > 100 ? 15 : -5}>{`${label} (${x.toFixed(2)}, ${y.toFixed(2)})`}</text>
       </g>
@@ -78,13 +75,13 @@ class Vertex extends React.Component {
 }
 
 const mapStateToProps = ({ graph: { nodes }, result: { path } }, { idx }) => ({
-  vertex: nodes[idx],
-  isPathFound: getIsPathFound(path)
+  vertex: nodes[idx]
 });
 
 const mapDispatchToProps = dispatch => ({
   updateNode: (idx, x, y) => dispatch(updateNode(idx, x, y)),
-  updateEdges: idx => dispatch(updateEdges(idx))
+  updateEdges: idx => dispatch(updateEdges(idx)),
+  resetResult: () => dispatch(resetResult())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vertex);

@@ -32,6 +32,12 @@ const result = (state = { path: null, shown: false }, action) => {
         path: action.path,
         shown: true
       };
+    case "RESET_RESULT":
+      return {
+        ...state,
+        path: null,
+        shown: false
+      };
     case "TOGGLE_RESULT_SHOWN":
       return {
         ...state,
