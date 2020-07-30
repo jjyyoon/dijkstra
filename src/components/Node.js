@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { updateNode, updateEdges, resetResult } from "../redux/actions";
 import { checkBoundary } from "../helpers";
 
-class Vertex extends React.Component {
+class Node extends React.Component {
   constructor(props) {
     super(props);
 
@@ -62,7 +62,7 @@ class Vertex extends React.Component {
   render() {
     const {
       idx,
-      vertex: { label, x, y }
+      node: { label, x, y }
     } = this.props;
 
     return (
@@ -74,9 +74,7 @@ class Vertex extends React.Component {
   }
 }
 
-const mapStateToProps = ({ graph: { nodes }, result: { path } }, { idx }) => ({
-  vertex: nodes[idx]
-});
+const mapStateToProps = ({ graph: { nodes } }, { idx }) => ({ node: nodes[idx] });
 
 const mapDispatchToProps = dispatch => ({
   updateNode: (idx, x, y) => dispatch(updateNode(idx, x, y)),
@@ -84,4 +82,4 @@ const mapDispatchToProps = dispatch => ({
   resetResult: () => dispatch(resetResult())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Vertex);
+export default connect(mapStateToProps, mapDispatchToProps)(Node);

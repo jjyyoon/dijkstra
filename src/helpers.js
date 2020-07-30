@@ -1,7 +1,7 @@
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-export const generateVertices = (num, maxX, maxY) => {
-  const vertices = [];
+export const generateNodes = (num, maxX, maxY) => {
+  const nodes = [];
   const len = alphabet.length;
 
   for (let i = 0, label, firstChar; i < num; i++) {
@@ -14,21 +14,21 @@ export const generateVertices = (num, maxX, maxY) => {
       label = firstChar + alphabet[i % len];
     }
 
-    vertices.push({
+    nodes.push({
       label,
       x: Math.random() * (maxX * 0.75),
       y: Math.random() * (maxY * 0.75)
     });
   }
 
-  return vertices;
+  return nodes;
 };
 
-const generateLinks = vertices => {
-  const randomNum = () => Math.floor(Math.random() * vertices.length);
+const generateLinks = nodes => {
+  const randomNum = () => Math.floor(Math.random() * nodes.length);
   const links = {};
 
-  for (let source = 0; source < vertices.length; source++) {
+  for (let source = 0; source < nodes.length; source++) {
     if (!links[source]) {
       links[source] = {};
     }
@@ -56,41 +56,41 @@ const generateLinks = vertices => {
   return links;
 };
 
-export const generateEdges = vertices => {
-  const graph = [];
-  const links = generateLinks(vertices);
+export const generateEdges = nodes => {
+  const edges = [];
+  const links = generateLinks(nodes);
 
-  for (let i = 0; i < vertices.length; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     const arr = [];
 
-    for (let j = 0, r; j < vertices.length; j++) {
+    for (let j = 0, r; j < nodes.length; j++) {
       if (!links[i][j]) {
         r = 0;
       } else if (i > j) {
-        r = graph[j][i];
+        r = edges[j][i];
       } else {
-        const source = vertices[i];
-        const target = vertices[j];
+        const source = nodes[i];
+        const target = nodes[j];
         r = Math.hypot(target.x - source.x, target.y - source.y);
       }
 
       arr.push(r);
     }
 
-    graph.push(arr);
+    edges.push(arr);
   }
 
-  return graph;
+  return edges;
 };
 
-export const findTheShortestPath = (graph, source, target) => {
-  const vertices = [];
+export const findTheShortestPath = (edges, source, target) => {
+  const nodes = [];
   const result = {};
 
   let i = 0;
 
-  while (graph.length !== vertices.length) {
-    vertices.push(alphabet[i]);
+  while (edges.length !== nodes.length) {
+    nodes.push(alphabet[i]);
     i = i + 1;
   }
 
@@ -101,25 +101,25 @@ export const findTheShortestPath = (graph, source, target) => {
     result[current].visited = true;
 
     let next = null;
-    const index = vertices.indexOf(current);
+    const index = nodes.indexOf(current);
 
-    graph[index].forEach((cost, idx) => {
-      const vertex = vertices[idx];
+    edges[index].forEach((cost, idx) => {
+      const node = nodes[idx];
 
-      if (cost && (!result[vertex] || !result[vertex].visited)) {
-        const totalCost = result[current].cost + graph[index][idx];
+      if (cost && (!result[node] || !result[node].visited)) {
+        const totalCost = result[current].cost + edges[index][idx];
 
-        if (!result[vertex] || result[vertex].cost > totalCost) {
-          result[vertex] = { path: [...result[current].path, vertex], cost: totalCost };
+        if (!result[node] || result[node].cost > totalCost) {
+          result[node] = { path: [...result[current].path, node], cost: totalCost };
         }
       }
 
       if (
-        result[vertex] &&
-        !result[vertex].visited &&
-        (!next || result[next].cost > result[vertex].cost)
+        result[node] &&
+        !result[node].visited &&
+        (!next || result[next].cost > result[node].cost)
       ) {
-        next = vertex;
+        next = node;
       }
     });
 
