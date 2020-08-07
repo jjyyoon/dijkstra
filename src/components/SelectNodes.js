@@ -12,10 +12,12 @@ const SelectNodes = ({ setResult, resetResult }) => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    const source = event.target.source.value;
-    const target = event.target.target.value;
+    let { source, target } = event.target;
 
-    if (source === target) {
+    source = { id: source.selectedIndex, label: source.value };
+    target = { id: target.selectedIndex, label: target.value };
+
+    if (source.id === target.id) {
       if (!error) {
         setError(true);
         resetResult();

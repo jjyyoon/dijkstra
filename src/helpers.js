@@ -84,46 +84,33 @@ export const generateEdges = nodes => {
 };
 
 export const findTheShortestPath = (edges, source, target) => {
-  const nodes = [];
-  const result = {};
+  const result = { [source]: { path: [source], dist: 0 } };
 
-  let i = 0;
+  while (source !== target && source !== undefined) {
+    result[source].visited = true;
 
-  while (edges.length !== nodes.length) {
-    nodes.push(alphabet[i]);
-    i = i + 1;
-  }
+    const dists = edges[source];
+    let next;
 
-  result[source] = { path: [source], cost: 0 };
-  let current = source;
+    for (let i = 0; i < dists.length; i++) {
+      if ((result[i] && result[i].visited) || (!dists[i] && !result[i])) {
+        continue;
+      }
 
-  while (current !== target) {
-    result[current].visited = true;
+      if (dists[i]) {
+        const totalDist = result[source].dist + dists[i];
 
-    let next = null;
-    const index = nodes.indexOf(current);
-
-    edges[index].forEach((cost, idx) => {
-      const node = nodes[idx];
-
-      if (cost && (!result[node] || !result[node].visited)) {
-        const totalCost = result[current].cost + edges[index][idx];
-
-        if (!result[node] || result[node].cost > totalCost) {
-          result[node] = { path: [...result[current].path, node], cost: totalCost };
+        if (!result[i] || result[i].dist > totalDist) {
+          result[i] = { path: [...result[source].path, i], dist: totalDist };
         }
       }
 
-      if (
-        result[node] &&
-        !result[node].visited &&
-        (!next || result[next].cost > result[node].cost)
-      ) {
-        next = node;
+      if (next === undefined || result[next].dist > result[i].dist) {
+        next = i;
       }
-    });
+    }
 
-    current = next;
+    source = next;
   }
 
   return result;

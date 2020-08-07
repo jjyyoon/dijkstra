@@ -62,15 +62,31 @@ export const updateGraph = (forX, forY) => {
 export const setResult = (source, target) => {
   return (dispatch, getState) => {
     const { edges } = getState().graph;
-    const result = findTheShortestPath(edges, source, target);
+    const result = findTheShortestPath(edges, source.id, target.id);
 
-    return dispatch({ type: "SET_RESULT", path: result[target].path });
+    let path = null;
+    let shown = false;
+
+    if (result[target.id]) {
+      path = result[target.id].path;
+      shown = true;
+    }
+
+    return dispatch({
+      type: "SET_RESULT",
+      source: source.label,
+      target: target.label,
+      path,
+      shown
+    });
   };
 };
 
 export const resetResult = () => {
   return (dispatch, getState) => {
-    if (getState().result.path) {
+    const { source, target } = getState().result;
+
+    if (source && target) {
       return dispatch({ type: "RESET_RESULT" });
     }
   };
