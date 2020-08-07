@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { getPathInfo } from "../redux/selectors";
 
-const Path = ({ id, source, target, edge }) => (
+const Path = ({ id, pathInfo: { source, target, edge } }) => (
   <g>
     <path
       id={id}
@@ -16,10 +17,8 @@ const Path = ({ id, source, target, edge }) => (
   </g>
 );
 
-const mapStateToProps = ({ graph: { nodes, edges } }, { from, to }) => ({
-  source: nodes[from],
-  target: nodes[to],
-  edge: edges[from][to]
+const mapStateToProps = (state, { sourceId, targetId }) => ({
+  pathInfo: getPathInfo(sourceId, targetId)(state)
 });
 
 export default connect(mapStateToProps)(Path);

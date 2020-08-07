@@ -49,7 +49,7 @@ class Playground extends React.Component {
               return null;
             }
 
-            return <Path key={`${i}${j}`} id={`path${i}${j}`} from={i} to={j} />;
+            return <Path key={`${i}${j}`} id={`path${i}${j}`} sourceId={i} targetId={j} />;
           })
         )}
         {shown && <ShowResult />}

@@ -6,6 +6,15 @@ const getSource = state => state.result.source;
 const getTarget = state => state.result.target;
 const getPath = state => state.result.path;
 
+export const getNode = id => createSelector([getNodes], nodes => nodes[id]);
+
+export const getPathInfo = (sourceId, targetId) =>
+  createSelector([getNodes, getEdges], (nodes, edges) => ({
+    source: nodes[sourceId],
+    target: nodes[targetId],
+    edge: edges[sourceId][targetId]
+  }));
+
 export const getNodeLabels = createSelector([getNodes], nodes => nodes.map(node => node.label));
 export const getNodesCount = createSelector([getNodes], nodes => nodes.length);
 

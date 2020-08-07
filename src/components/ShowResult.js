@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import AnimatedPath from "./AnimatedPath";
 
-const ShowResult = ({ route, path, nodes, edges }) => {
+const ShowResult = ({ route, path }) => {
   const len = path.length;
 
   return path.map((sourceId, idx) => {
@@ -18,17 +18,14 @@ const ShowResult = ({ route, path, nodes, edges }) => {
         key={route + idx}
         no={idx}
         end={`route${len - 2}.end`}
-        source={nodes[sourceId]}
-        target={nodes[targetId]}
-        edge={edges[sourceId][targetId]}
+        sourceId={sourceId}
+        targetId={targetId}
       />
     );
   });
 };
 
-const mapStateToProps = ({ graph: { nodes, edges }, result: { source, target, path } }) => ({
-  nodes,
-  edges,
+const mapStateToProps = ({ result: { source, target, path } }) => ({
   route: source + target,
   path
 });
