@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { updateNode, updateEdges, resetResult } from "../redux/actions";
+import { getNode } from "../redux/selectors";
 import { checkBoundary } from "../helpers";
 
 class Node extends React.Component {
@@ -74,7 +75,7 @@ class Node extends React.Component {
   }
 }
 
-const mapStateToProps = ({ graph: { nodes } }, { idx }) => ({ node: nodes[idx] });
+const mapStateToProps = (state, { idx }) => ({ node: getNode(idx)(state) });
 
 const mapDispatchToProps = dispatch => ({
   updateNode: (idx, x, y) => dispatch(updateNode(idx, x, y)),
