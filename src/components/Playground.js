@@ -61,11 +61,15 @@ class Playground extends React.Component {
   }
 }
 
-const mapStateToProps = ({ graph: { nodes, edges }, result: { shown } }) => ({
-  edges,
-  nodeCount: getNodesCount(nodes),
-  shown
-});
+const mapStateToProps = state => {
+  const { graph, result } = state;
+
+  return {
+    edges: graph.edges,
+    nodeCount: getNodesCount(state),
+    shown: result.shown
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   updateGraph: (forX, forY) => dispatch(updateGraph(forX, forY)),

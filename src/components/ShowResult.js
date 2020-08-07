@@ -3,33 +3,34 @@ import { connect } from "react-redux";
 
 import AnimatedPath from "./AnimatedPath";
 
-const ShowResult = ({ path, nodes, edges }) => {
+const ShowResult = ({ route, path, nodes, edges }) => {
   const len = path.length;
-  const route = path[0] + path[len - 1];
 
-  return path.map((node, idx) => {
+  return path.map((sourceId, idx) => {
     if (idx === len - 1) {
       return null;
     }
 
-    const sourceIdx = nodes.findIndex(({ label }) => label === node);
-    const targetIdx = nodes.findIndex(({ label }) => label === path[idx + 1]);
-    const source = nodes[sourceIdx];
-    const target = nodes[targetIdx];
+    const targetId = path[idx + 1];
 
     return (
       <AnimatedPath
         key={route + idx}
         no={idx}
         end={`route${len - 2}.end`}
-        source={source}
-        target={target}
-        edge={edges[sourceIdx][targetIdx]}
+        source={nodes[sourceId]}
+        target={nodes[targetId]}
+        edge={edges[sourceId][targetId]}
       />
     );
   });
 };
 
-const mapStateToProps = ({ graph: { nodes, edges }, result: { path } }) => ({ nodes, edges, path });
+const mapStateToProps = ({ graph: { nodes, edges }, result: { source, target, path } }) => ({
+  nodes,
+  edges,
+  route: source + target,
+  path
+});
 
 export default connect(mapStateToProps)(ShowResult);

@@ -24,20 +24,20 @@ const graph = (state = { nodes: null, edges: null }, action) => {
   }
 };
 
-const result = (state = { path: null, shown: false }, action) => {
+const INITIAL_STATE = { source: null, target: null, path: null, shown: false };
+
+const result = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "SET_RESULT":
       return {
         ...state,
+        source: action.source,
+        target: action.target,
         path: action.path,
-        shown: true
+        shown: action.shown
       };
     case "RESET_RESULT":
-      return {
-        ...state,
-        path: null,
-        shown: false
-      };
+      return INITIAL_STATE;
     case "TOGGLE_RESULT_SHOWN":
       return {
         ...state,

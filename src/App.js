@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { generateGraph } from "./redux/actions";
-import { getIsGraphCreated, getIsPathFound } from "./redux/selectors";
+import { getIsGraphCreated, getIsResultSet } from "./redux/selectors";
 
 import FormContainer from "./components/FormContainer";
 import ResultContainer from "./components/ResultContainer";
 import Playground from "./components/Playground";
 
-const App = ({ generateGraph, isGraphCreated, isPathFound }) => {
+const App = ({ generateGraph, isGraphCreated, isResultSet }) => {
   if (!isGraphCreated) {
     const { innerWidth, innerHeight } = window;
     generateGraph(9, innerWidth * 0.8, innerHeight * 0.9);
@@ -23,16 +23,16 @@ const App = ({ generateGraph, isGraphCreated, isPathFound }) => {
     <div className="h-screen flex font-body">
       <FormContainer />
       <div className="w-4/5 h-full relative">
-        {isPathFound && <ResultContainer />}
+        {isResultSet && <ResultContainer />}
         <Playground />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({ graph: { edges }, result: { path } }) => ({
-  isGraphCreated: getIsGraphCreated(edges),
-  isPathFound: getIsPathFound(path)
+const mapStateToProps = state => ({
+  isGraphCreated: getIsGraphCreated(state),
+  isResultSet: getIsResultSet(state)
 });
 
 const mapDispatchToProps = dispatch => ({
