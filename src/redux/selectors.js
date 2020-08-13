@@ -8,6 +8,8 @@ const getPath = state => state.result.path;
 
 export const getNode = id => createSelector([getNodes], nodes => nodes[id]);
 
+export const getElementInEdges = id => createSelector([getEdges], edges => edges[id]);
+
 export const getPathInfo = (sourceId, targetId) =>
   createSelector([getNodes, getEdges], (nodes, edges) => ({
     source: nodes[sourceId],

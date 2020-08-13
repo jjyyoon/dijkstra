@@ -1,8 +1,8 @@
 import React from "react";
 
-const CustomButton = ({ content }) => (
+const CustomButton = ({ content, color }) => (
   <button
-    className="w-full bg-blue-500 hover:bg-blue-700 text-white focus:shadow-outline"
+    className={`w-full bg-${color}-500 hover:bg-${color}-700 text-white focus:shadow-outline`}
     type="submit"
   >
     {content}
