@@ -1,58 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { getNodeLabels, getElementInEdges } from "../redux/selectors";
+import { getNodeLabels } from "../redux/selectors";
 
-import CustomButton from "./CustomButton";
+import CustomSelect from "./CustomSelect";
+import LinkedTo from "./LinkedTo";
 import { ReactComponent as CloseOutline } from "../assets/close-outline.svg";
 
-const Popover = ({ label, nodeLabels, edges }) => (
-  <foreignObject
-    className="w-64 h-108 bg-white rounded-lg shadow-xl border border-gray-500"
-    x="0"
-    y="0"
-  >
-    <div className="px-3 py-2 bg-gray-200 rounded-t-lg flex items-center justify-between">
-      <h3>Set Node {label}</h3>
-      <CloseOutline className="h-4 w-4" />
-    </div>
+const Popover = ({ nodeLabels, edges }) => {
+  const [selectedId, setSelectedId] = useState(0);
 
-    <form className="px-4 pt-3">
-      <div className="flex items-center mb-3 border-b border-teal-500 py-1">
-        <label className="label pr-4" htmlFor="label">
-          Label
-        </label>
-        <input placeholder={label} id="label" maxLength="13" />
-      </div>
-      <div className="mb-3">
-        <p className="label mb-2 border-b border-teal-500 py-1">Linked To</p>
-        {edges.map((edge, idx) => (
-          <div key={idx} className="flex flex-wrap mb-1 text-sm">
-            <div className="w-3/5">
-              <input type="checkbox" id="linked" defaultChecked={!edge ? false : true} />
-              <label htmlFor="linked">{" " + nodeLabels[idx]}</label>
-            </div>
-            <div className="w-2/5">
-              <label htmlFor="cost">{"Cost: "}</label>
-              <input
-                className="outline-none"
-                type="number"
-                id="cost"
-                min="1"
-                max="20"
-                defaultValue={edge}
-              />
-            </div>
+  const handleChange = ({ target: { selectedIndex } }) => {
+    setSelectedId(selectedIndex);
+  };
+
+  return (
+    <div className="absolute right-0 mt-1 z-10">
+      <div className="absolute right-10 w-4 h-4 bg-gray-200 transform rotate-45" />
+      <div className="w-72 bg-white rounded-lg shadow-xl border border-gray-200 absolute right-2 top-2">
+        <div className="px-3 py-2 bg-gray-200 rounded-t-lg flex items-center justify-between">
+          <h3>Set Node</h3>
+          <CustomSelect py="1" handleChange={handleChange} />
+          <CloseOutline className="h-4 w-4" />
+        </div>
+
+        <form className="px-4 pt-3 pb-4 mb-4">
+          <div className="flex items-center mb-3 border-b-4 border-teal-500 py-1">
+            <label className="label pr-4" htmlFor="label">
+              Label
+            </label>
+            <input placeholder={nodeLabels[selectedId]} id="label" maxLength="13" />
           </div>
-        ))}
+          <div>
+            <p className="label mb-2 border-b-4 border-teal-500 py-1">Linked To</p>
+            {edges[selectedId].map((edge, idx) => (
+              <LinkedTo key={`${selectedId}${idx}`} edge={edge} label={nodeLabels[idx]} />
+            ))}
+          </div>
+        </form>
       </div>
-      <CustomButton content="Save" color="teal" />
-    </form>
-  </foreignObject>
-);
+    </div>
+  );
+};
 
-const mapStateToProps = (state, { idx }) => ({
+const mapStateToProps = state => ({
   nodeLabels: getNodeLabels(state),
-  edges: getElementInEdges(idx)(state)
+  edges: state.graph.edges
 });
 
 export default connect(mapStateToProps)(Popover);

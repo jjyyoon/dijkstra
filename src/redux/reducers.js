@@ -1,7 +1,12 @@
 import { combineReducers } from "redux";
 
-const graph = (state = { nodes: null, edges: null }, action) => {
+const graph = (state = { nodes: null, edges: null, useRealDist: false }, action) => {
   switch (action.type) {
+    case "CHANGE_SETTING":
+      return {
+        ...state,
+        useRealDist: !state.useRealDist
+      };
     case "GENERATE_GRAPH":
     case "UPDATE_GRAPH":
       return {

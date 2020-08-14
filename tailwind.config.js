@@ -1,6 +1,20 @@
 module.exports = {
   purge: [],
   theme: {
+    boxShadow: {
+      xs: "0 0 0 1px rgba(0, 0, 0, 0.05)",
+      sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      default: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+      inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+      outline: "0 0 0 3px rgba(66, 153, 225, 0.5)",
+      none: "none",
+      "outline-blue": "0 0 0 3px rgba(66, 153, 225, 0.5)",
+      "outline-red": "0 0 0 3px rgba(245, 101, 101, 1)"
+    },
     fontFamily: {
       sans: [
         "system-ui",
@@ -21,14 +35,12 @@ module.exports = {
       mono: ["Menlo", "Monaco", "Consolas", '"Liberation Mono"', '"Courier New"', "monospace"],
       body: ["Balsamiq Sans", "cursive"]
     },
-    height: theme => ({
+    inset: {
+      "0": "0",
       auto: "auto",
-      ...theme("spacing"),
-      full: "100%",
-      screen: "100vh",
-      "1/10": "10%",
-      "108": "27rem"
-    }),
+      "2": "0.5rem",
+      "10": "2.5rem"
+    },
     maxWidth: (theme, { breakpoints }) => ({
       none: "none",
       xs: "20rem",
@@ -46,10 +58,11 @@ module.exports = {
       "7/8": "87.5%"
     }),
     extend: {
+      spacing: {
+        "72": "18rem",
+        "1/10": "10%"
+      },
       strokeWidth: {
-        "0": "0",
-        "1": "1",
-        "2": "2",
         "5": "5"
       }
     }

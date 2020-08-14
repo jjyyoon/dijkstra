@@ -43,7 +43,7 @@ const SelectNodes = ({ setResult, resetResult }) => {
           {` Source can't be the same as target, please select another source or target.`}
         </p>
       )}
-      <CustomButton content="Find" color="blue" />
+      <CustomButton content="Find" />
     </form>
   );
 };

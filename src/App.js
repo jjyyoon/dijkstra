@@ -4,7 +4,7 @@ import { generateGraph } from "./redux/actions";
 import { getIsGraphCreated, getIsResultSet } from "./redux/selectors";
 
 import FormContainer from "./components/FormContainer";
-import ResultContainer from "./components/ResultContainer";
+import Header from "./components/Header";
 import Playground from "./components/Playground";
 
 const App = ({ generateGraph, isGraphCreated, isResultSet }) => {
@@ -23,7 +23,7 @@ const App = ({ generateGraph, isGraphCreated, isResultSet }) => {
     <div className="h-screen flex font-body">
       <FormContainer />
       <div className="w-4/5 h-full relative">
-        {isResultSet && <ResultContainer />}
+        <Header />
         <Playground />
       </div>
     </div>
