@@ -1,5 +1,7 @@
 import { generateNodes, generateEdges, findTheShortestPath } from "../helpers";
 
+export const changeSetting = () => ({ type: "CHANGE_SETTING" });
+
 export const generateGraph = (num, maxX, maxY) => {
   const nodes = generateNodes(num, maxX, maxY);
 

@@ -35,6 +35,10 @@ input:not([type="checkbox"]):not([type="number"]) {
     @apply appearance-none w-full text-gray-700 leading-tight;
 }
 
+input[type="checkbox"] {
+    @apply mr-1;
+}
+
 .label {
     @apply block uppercase text-gray-700 text-sm font-bold;
 }
