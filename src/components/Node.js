@@ -47,7 +47,7 @@ class Node extends React.Component {
     const point = checkBoundary(x, y, width * 0.75, height * 0.75);
 
     const { updateNode, idx } = this.props;
-    updateNode(idx, point.x, point.y);
+    updateNode(idx, { x: point.x, y: point.y });
   };
 
   handleMouseUp = () => {
@@ -78,7 +78,7 @@ class Node extends React.Component {
 const mapStateToProps = (state, { idx }) => ({ node: getNode(idx)(state) });
 
 const mapDispatchToProps = dispatch => ({
-  updateNode: (idx, x, y) => dispatch(updateNode(idx, x, y)),
+  updateNode: (idx, updateInfo) => dispatch(updateNode(idx, updateInfo)),
   updateEdges: idx => dispatch(updateEdges(idx)),
   resetResult: () => dispatch(resetResult())
 });

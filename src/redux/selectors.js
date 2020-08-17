@@ -8,7 +8,8 @@ const getPath = state => state.result.path;
 
 export const getNode = id => createSelector([getNodes], nodes => nodes[id]);
 
-export const getElementInEdges = id => createSelector([getEdges], edges => edges[id]);
+export const getEdge = (sourceId, targetId) =>
+  createSelector([getEdges], edges => edges[sourceId][targetId]);
 
 export const getPathInfo = (sourceId, targetId) =>
   createSelector([getNodes, getEdges], (nodes, edges) => ({
@@ -18,6 +19,9 @@ export const getPathInfo = (sourceId, targetId) =>
   }));
 
 export const getNodeLabels = createSelector([getNodes], nodes => nodes.map(node => node.label));
+
+export const getNodeLabel = id => createSelector([getNodeLabels], nodeLabels => nodeLabels[id]);
+
 export const getNodesCount = createSelector([getNodes], nodes => nodes.length);
 
 export const getIsGraphCreated = createSelector([getEdges], edges => !!edges);

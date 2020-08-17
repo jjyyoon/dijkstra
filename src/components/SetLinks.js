@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { getNodeLabels } from "../redux/selectors";
 
 import CustomSelect from "./CustomSelect";
+import ChangeLabel from "./ChangeLabel";
 import LinkedTo from "./LinkedTo";
 import { ReactComponent as CloseOutline } from "../assets/close-outline.svg";
 
-const Popover = ({ nodeLabels, edges }) => {
+const Popover = ({ edges }) => {
   const [selectedId, setSelectedId] = useState(0);
 
   const handleChange = ({ target: { selectedIndex } }) => {
@@ -23,28 +23,20 @@ const Popover = ({ nodeLabels, edges }) => {
           <CloseOutline className="h-4 w-4" />
         </div>
 
-        <form className="px-4 pt-3 pb-4 mb-4">
-          <div className="flex items-center mb-3 border-b-4 border-teal-500 py-1">
-            <label className="label pr-4" htmlFor="label">
-              Label
-            </label>
-            <input placeholder={nodeLabels[selectedId]} id="label" maxLength="13" />
-          </div>
+        <div className="p-4 pt-3 mb-4">
+          <ChangeLabel key={selectedId} id={selectedId} />
           <div>
             <p className="label mb-2 border-b-4 border-teal-500 py-1">Linked To</p>
             {edges[selectedId].map((edge, idx) => (
-              <LinkedTo key={`${selectedId}${idx}`} edge={edge} label={nodeLabels[idx]} />
+              <LinkedTo key={`${selectedId}${idx}`} source={selectedId} target={idx} />
             ))}
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = state => ({
-  nodeLabels: getNodeLabels(state),
-  edges: state.graph.edges
-});
+const mapStateToProps = ({ graph: { edges } }) => ({ edges });
 
 export default connect(mapStateToProps)(Popover);

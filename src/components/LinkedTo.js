@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
+import { updateEdge } from "../redux/actions";
+import { getNodeLabel, getEdge } from "../redux/selectors";
 
-const LinkedTo = ({ edge, label }) => {
-  const [linked, setLinked] = useState(!edge ? false : true);
-  const [cost, setCost] = useState(edge);
-
-  const handleChange = ({ target: { type, value } }) => {
+const LinkedTo = ({ source, target, useRealDist, label, edge, updateEdge }) => {
+  const handleChange = ({ target: { type, checked, value } }) => {
     if (type === "checkbox") {
-      return setLinked(!linked);
+      return updateEdge(source, target, +checked);
     }
 
-    return setCost(value);
+    return updateEdge(source, target, +value);
   };
 
   return (
     <div className="flex flex-wrap mb-1 text-sm">
       <div className="w-7/12">
-        <input type="checkbox" checked={linked} onChange={handleChange} />
+        <input
+          type="checkbox"
+          checked={edge ? true : false}
+          onChange={handleChange}
+          disabled={source === target ? true : false}
+        />
         <label>{label}</label>
       </div>
       <div className="w-5/12">
@@ -25,12 +30,23 @@ const LinkedTo = ({ edge, label }) => {
           type="number"
           min="1"
           max="20"
-          value={cost}
+          value={Math.round(edge)}
           onChange={handleChange}
+          disabled={useRealDist || !edge ? true : false}
         />
       </div>
     </div>
   );
 };
 
-export default LinkedTo;
+const mapStateToProps = (state, { source, target }) => ({
+  useRealDist: state.graph.useRealDist,
+  label: getNodeLabel(target)(state),
+  edge: getEdge(source, target)(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateEdge: (source, target, edge) => dispatch(updateEdge(source, target, edge))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LinkedTo);

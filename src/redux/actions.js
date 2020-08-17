@@ -12,12 +12,29 @@ export const generateGraph = (num, maxX, maxY) => {
   };
 };
 
-export const updateNode = (idx, x, y) => {
+export const updateNode = (idx, updateInfo) => {
   return (dispatch, getState) => {
-    const { nodes } = getState().graph;
-    nodes[idx] = { ...nodes[idx], x, y };
+    const newNodes = getState().graph.nodes.slice();
+    newNodes[idx] = { ...newNodes[idx], ...updateInfo };
 
-    return dispatch({ type: "UPDATE_NODE", nodes });
+    return dispatch({ type: "UPDATE_NODE", nodes: newNodes });
+  };
+};
+
+export const updateEdge = (sourceId, targetId, edge) => {
+  return (dispatch, getState) => {
+    let { useRealDist, nodes, edges } = getState().graph;
+
+    if (useRealDist && edge) {
+      const source = nodes[sourceId];
+      const target = nodes[targetId];
+      edge = Math.hypot(source.x - target.x, source.y - target.y);
+    }
+
+    edges[sourceId][targetId] = edge;
+    edges[targetId][sourceId] = edge;
+
+    return dispatch({ type: "UPDATE_EDGE", edges });
   };
 };
 
