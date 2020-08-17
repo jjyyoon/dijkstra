@@ -30,8 +30,8 @@ select:focus {
     @apply outline-none;
 }
 
-select,
-input:not([type="checkbox"]):not([type="number"]) {
+input:not([type="checkbox"]):not([type="number"]),
+select {
     @apply appearance-none w-full text-gray-700 leading-tight;
 }
 
@@ -39,12 +39,16 @@ input[type="checkbox"] {
     @apply mr-1;
 }
 
-.label {
-    @apply block uppercase text-gray-700 text-sm font-bold;
+input[type="number"]:disabled {
+    @apply bg-transparent;
 }
 
 .centre-items {
     @apply flex items-center justify-center;
+}
+
+.label {
+    @apply block uppercase text-gray-700 text-sm font-bold;
 }
 
 .spinner {

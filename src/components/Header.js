@@ -27,7 +27,12 @@ const Header = ({ useRealDist, isResultSet, changeSetting }) => {
         </div>
       </div>
       <div className="float-right relative">
-        <CustomButton content="Change Node Setting" color="red" handleClick={handleClick} />
+        <CustomButton
+          content="Change Node Setting"
+          simple={true}
+          color="red"
+          handleClick={handleClick}
+        />
         {showSetting && <SetLinks handleClose={handleClose} />}
       </div>
       {isResultSet && <ResultContainer />}

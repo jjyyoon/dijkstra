@@ -19,6 +19,7 @@ const graph = (state = { nodes: null, edges: null, useRealDist: false }, action)
         ...state,
         nodes: action.nodes
       };
+    case "UPDATE_EDGE":
     case "UPDATE_EDGES":
       return {
         ...state,
