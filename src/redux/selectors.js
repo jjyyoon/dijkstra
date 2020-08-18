@@ -11,13 +11,6 @@ export const getNode = id => createSelector([getNodes], nodes => nodes[id]);
 export const getEdge = (sourceId, targetId) =>
   createSelector([getEdges], edges => edges[sourceId][targetId]);
 
-export const getPathInfo = (sourceId, targetId) =>
-  createSelector([getNodes, getEdges], (nodes, edges) => ({
-    source: nodes[sourceId],
-    target: nodes[targetId],
-    edge: edges[sourceId][targetId]
-  }));
-
 export const getNodeLabels = createSelector([getNodes], nodes => nodes.map(node => node.label));
 
 export const getNodeLabel = id => createSelector([getNodeLabels], nodeLabels => nodeLabels[id]);

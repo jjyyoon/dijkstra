@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
-import { getPathInfo } from "../redux/selectors";
+import { getNode, getEdge } from "../redux/selectors";
 
-const AnimatedPath = ({ no, end, pathInfo: { source, target, edge } }) => {
+const AnimatedPath = ({ no, end, source, target, edge }) => {
   const drawing = useRef(null);
 
   useEffect(() => {
@@ -33,7 +33,9 @@ const AnimatedPath = ({ no, end, pathInfo: { source, target, edge } }) => {
 };
 
 const mapStateToProps = (state, { sourceId, targetId }) => ({
-  pathInfo: getPathInfo(sourceId, targetId)(state)
+  source: getNode(sourceId)(state),
+  target: getNode(targetId)(state),
+  edge: getEdge(sourceId, targetId)(state)
 });
 
 export default connect(mapStateToProps)(AnimatedPath);
