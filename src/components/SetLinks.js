@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import CustomSelect from "./CustomSelect";
 import ChangeLabel from "./ChangeLabel";
+import Repeat from "./Repeat";
 import LinkedTo from "./LinkedTo";
 import { ReactComponent as CloseOutline } from "../assets/close-outline.svg";
 
@@ -27,9 +28,9 @@ const Popover = ({ edges }) => {
           <ChangeLabel key={selectedId} id={selectedId} />
           <div>
             <p className="label mb-2 border-b-4 border-teal-500 py-1">Linked To</p>
-            {edges[selectedId].map((edge, idx) => (
-              <LinkedTo key={`${selectedId}${idx}`} source={selectedId} target={idx} />
-            ))}
+            <Repeat>
+              {idx => <LinkedTo key={`${selectedId}${idx}`} source={selectedId} target={idx} />}
+            </Repeat>
           </div>
         </div>
       </div>
