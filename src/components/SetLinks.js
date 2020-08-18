@@ -17,7 +17,7 @@ const Popover = ({ handleClose }) => {
     <div className="absolute right-0 mt-1 z-10">
       <div className="absolute right-10 w-4 h-4 bg-gray-200 transform rotate-45" />
       <div className="w-72 bg-white rounded-lg shadow-xl border border-gray-200 absolute right-2 top-2">
-        <div className="px-3 py-2 bg-gray-200 rounded-t-lg flex items-center justify-between">
+        <div className="px-3 py-2 bg-gray-200 rounded-t-lg box-with-btn">
           <h3>Set Node</h3>
           <CustomSelect py="1" handleChange={handleChange} />
           <CloseOutline className="h-4 w-4 cursor-pointer" onClick={handleClose} />

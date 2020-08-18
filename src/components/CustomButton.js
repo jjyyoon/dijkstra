@@ -12,22 +12,14 @@ const btnClassName = (simple, outline, color) => {
   return `border-transparent text-${color}-500 hover:text-${color}-800 text-sm py-1 px-2`;
 };
 
-const CustomButton = ({ type, content, simple, outline, color, addition, handleClick }) => {
-  let className = btnClassName(simple, outline, color);
-
-  if (addition) {
-    className = `${className} ${addition}`;
-  }
-
-  return (
-    <button
-      className={className}
-      type={type ? type : "button"}
-      onClick={handleClick ? handleClick : null}
-    >
-      {content}
-    </button>
-  );
-};
+const CustomButton = ({ type = "button", content, simple, outline, color, handleClick }) => (
+  <button
+    className={btnClassName(simple, outline, color)}
+    type={type}
+    onClick={handleClick ? handleClick : null}
+  >
+    {content}
+  </button>
+);
 
 export default CustomButton;

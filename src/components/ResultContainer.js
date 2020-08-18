@@ -3,30 +3,34 @@ import { connect } from "react-redux";
 import { toggleResultShown } from "../redux/actions";
 import { getPathInLabel } from "../redux/selectors";
 
+import CustomButton from "./CustomButton";
+import { ReactComponent as ExclamationOutline } from "../assets/exclamation-outline.svg";
+
 const ResultContainer = ({ source, target, path, shown, toggleResultShown }) => {
   if (!path) {
     return (
-      <div className="h-1/10 p-4">
-        <h2>{`There is no path from ${source} to ${target}.`}</h2>
-      </div>
+      <h2 className="mt-2 pt-2 border-t border-gray-300">
+        <ExclamationOutline className="w-6 h-6 inline-block" />
+        {`There is no path from ${source} to ${target}.`}
+      </h2>
     );
   }
 
   return (
-    <div className="h-1/10 p-4">
-      <div className="inline-block">
+    <div className="mt-2 pt-2 border-t border-gray-300 box-with-btn">
+      <div>
         <h2>{`The shortest path is ${path}.`}</h2>
         <p className="text-sm italic">
           *The result would be reset if you resize the browser window or change the position of a
           node.
         </p>
       </div>
-      <button
-        className="float-right hover:bg-green-600 text-green-700 hover:text-white border border-green-500"
-        onClick={toggleResultShown}
-      >
-        {shown ? "Stop" : "Restart"} Animation
-      </button>
+      <CustomButton
+        content={`${shown ? "Stop" : "Restart"} Animation`}
+        outline={true}
+        color="green"
+        handleClick={toggleResultShown}
+      />
     </div>
   );
 };

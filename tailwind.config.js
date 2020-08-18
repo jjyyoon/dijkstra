@@ -59,8 +59,7 @@ module.exports = {
     }),
     extend: {
       spacing: {
-        "72": "18rem",
-        "1/10": "10%"
+        "72": "18rem"
       },
       strokeWidth: {
         "5": "5"

@@ -15,7 +15,7 @@ const Header = ({ useRealDist, isResultSet, changeSetting }) => {
   const handleClose = () => setShowSetting(false);
 
   return (
-    <div className="h-1/10 p-4">
+    <div className="p-4 pb-0">
       <div className="inline-block">
         <div>
           <input type="checkbox" checked={useRealDist} onChange={handleChange} />
