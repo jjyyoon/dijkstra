@@ -11,7 +11,7 @@ class Playground extends React.Component {
   constructor(props) {
     super(props);
     const { innerWidth, innerHeight } = window;
-    this.state = { width: innerWidth * 0.8, height: innerHeight * 0.9 };
+    this.state = { width: innerWidth * 0.8, height: innerHeight * 0.85 };
   }
 
   componentDidMount() {
@@ -27,9 +27,9 @@ class Playground extends React.Component {
     resetResult();
 
     const { width, height } = this.state;
-    updateGraph((innerWidth * 0.8) / width, (innerHeight * 0.9) / height);
+    updateGraph((innerWidth * 0.8) / width, (innerHeight * 0.85) / height);
 
-    this.setState({ width: innerWidth * 0.8, height: innerHeight * 0.9 });
+    this.setState({ width: innerWidth * 0.8, height: innerHeight * 0.85 });
   };
 
   render() {
@@ -42,10 +42,10 @@ class Playground extends React.Component {
         className="absolute bottom-0"
         viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}
       >
-        <Repeat>{idx => <Node key={idx} idx={idx} width={width} height={height} />}</Repeat>
         <Repeat>
           {i => <Repeat key={i}>{j => <Path key={`${i}${j}`} sourceId={i} targetId={j} />}</Repeat>}
         </Repeat>
+        <Repeat>{idx => <Node key={idx} idx={idx} width={width} height={height} />}</Repeat>
         {shown && <ShowResult />}
       </svg>
     );

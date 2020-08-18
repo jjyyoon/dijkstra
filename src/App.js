@@ -1,19 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
 import { generateGraph } from "./redux/actions";
-import { getIsGraphCreated, getIsResultSet } from "./redux/selectors";
+import { getIsGraphCreated } from "./redux/selectors";
 
 import FormContainer from "./components/FormContainer";
 import Header from "./components/Header";
 import Playground from "./components/Playground";
 
-const App = ({ generateGraph, isGraphCreated, isResultSet }) => {
+const App = ({ generateGraph, isGraphCreated }) => {
   if (!isGraphCreated) {
     const { innerWidth, innerHeight } = window;
-    generateGraph(9, innerWidth * 0.8, innerHeight * 0.9);
+    generateGraph(9, innerWidth * 0.8, innerHeight * 0.85);
 
     return (
-      <div className="h-screen centre-items">
+      <div className="h-screen center-items">
         <div className="spinner" />
       </div>
     );
@@ -30,10 +30,7 @@ const App = ({ generateGraph, isGraphCreated, isResultSet }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isGraphCreated: getIsGraphCreated(state),
-  isResultSet: getIsResultSet(state)
-});
+const mapStateToProps = state => ({ isGraphCreated: getIsGraphCreated(state) });
 
 const mapDispatchToProps = dispatch => ({
   generateGraph: (num, maxX, maxY) => dispatch(generateGraph(num, maxX, maxY))

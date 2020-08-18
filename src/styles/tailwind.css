@@ -43,8 +43,12 @@ input[type="number"]:disabled {
     @apply bg-transparent;
 }
 
-.centre-items {
+.center-items {
     @apply flex items-center justify-center;
+}
+
+.box-with-btn {
+    @apply flex items-center justify-between;
 }
 
 .label {
