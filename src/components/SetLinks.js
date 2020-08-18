@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 
 import CustomSelect from "./CustomSelect";
 import ChangeLabel from "./ChangeLabel";
@@ -7,7 +6,7 @@ import Repeat from "./Repeat";
 import LinkedTo from "./LinkedTo";
 import { ReactComponent as CloseOutline } from "../assets/close-outline.svg";
 
-const Popover = ({ edges }) => {
+const Popover = ({ handleClose }) => {
   const [selectedId, setSelectedId] = useState(0);
 
   const handleChange = ({ target: { selectedIndex } }) => {
@@ -21,7 +20,7 @@ const Popover = ({ edges }) => {
         <div className="px-3 py-2 bg-gray-200 rounded-t-lg flex items-center justify-between">
           <h3>Set Node</h3>
           <CustomSelect py="1" handleChange={handleChange} />
-          <CloseOutline className="h-4 w-4" />
+          <CloseOutline className="h-4 w-4 cursor-pointer" onClick={handleClose} />
         </div>
 
         <div className="p-4 pt-3 mb-4">
@@ -38,6 +37,4 @@ const Popover = ({ edges }) => {
   );
 };
 
-const mapStateToProps = ({ graph: { edges } }) => ({ edges });
-
-export default connect(mapStateToProps)(Popover);
+export default Popover;
