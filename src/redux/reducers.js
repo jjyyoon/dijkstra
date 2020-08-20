@@ -5,6 +5,7 @@ const graph = (state = { nodes: null, edges: null, useRealDist: false }, action)
     case "CHANGE_SETTING":
       return {
         ...state,
+        edges: action.edges,
         useRealDist: !state.useRealDist
       };
     case "GENERATE_GRAPH":
@@ -44,7 +45,12 @@ const result = (state = INITIAL_STATE, action) => {
       };
     case "RESET_RESULT":
       return INITIAL_STATE;
-    case "TOGGLE_RESULT_SHOWN":
+    case "STOP_ANIMATION":
+      return {
+        ...state,
+        shown: false
+      };
+    case "TOGGLE_ANIMATION_SHOWN":
       return {
         ...state,
         shown: !state.shown

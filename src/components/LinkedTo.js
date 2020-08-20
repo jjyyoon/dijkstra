@@ -1,15 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateEdge } from "../redux/actions";
+import { updateEdge, resetResult } from "../redux/actions";
 import { getNodeLabel, getEdge } from "../redux/selectors";
 
-const LinkedTo = ({ source, target, useRealDist, label, edge, updateEdge }) => {
+const LinkedTo = ({ source, target, useRealDist, label, edge, updateEdge, resetResult }) => {
   const handleChange = ({ target: { type, checked, value } }) => {
+    let cost;
+
     if (type === "checkbox") {
-      return updateEdge(source, target, +checked);
+      cost = +checked;
+    } else {
+      cost = +value <= 20 ? +value : 20;
     }
 
-    return updateEdge(source, target, +value);
+    updateEdge(source, target, cost);
+    resetResult();
   };
 
   return (
@@ -46,7 +51,8 @@ const mapStateToProps = (state, { source, target }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateEdge: (source, target, edge) => dispatch(updateEdge(source, target, edge))
+  updateEdge: (source, target, edge) => dispatch(updateEdge(source, target, edge)),
+  resetResult: () => dispatch(resetResult())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LinkedTo);
