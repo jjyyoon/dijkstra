@@ -31,7 +31,7 @@ const graph = (state = { nodes: null, edges: null, useRealDist: false }, action)
   }
 };
 
-const INITIAL_STATE = { source: null, target: null, path: null, shown: false };
+const INITIAL_STATE = { source: null, target: null, path: null, dist: null, shown: false };
 
 const result = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -41,6 +41,7 @@ const result = (state = INITIAL_STATE, action) => {
         source: action.source,
         target: action.target,
         path: action.path,
+        dist: action.dist,
         shown: action.shown
       };
     case "RESET_RESULT":

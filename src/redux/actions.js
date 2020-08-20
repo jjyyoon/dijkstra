@@ -94,21 +94,14 @@ export const setResult = (source, target) => {
     const { edges } = getState().graph;
     const result = findTheShortestPath(edges, source.id, target.id);
 
-    let path = null;
-    let shown = false;
+    let action = { path: null, dist: null, shown: false };
 
     if (result[target.id]) {
-      path = result[target.id].path;
-      shown = true;
+      const { path, dist } = result[target.id];
+      action = { path, dist, shown: true };
     }
 
-    return dispatch({
-      type: "SET_RESULT",
-      source: source.label,
-      target: target.label,
-      path,
-      shown
-    });
+    return dispatch({ type: "SET_RESULT", source: source.label, target: target.label, ...action });
   };
 };
 

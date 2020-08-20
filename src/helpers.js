@@ -64,7 +64,7 @@ export const generateEdges = (nodes, useRealDist, edges) => {
     edges = generateLinks(nodes.length);
   }
 
-  const setCost = (i, j) => {
+  const setDist = (i, j) => {
     if (!edges[i][j]) {
       return 0;
     }
@@ -86,7 +86,7 @@ export const generateEdges = (nodes, useRealDist, edges) => {
     const arr = [];
 
     for (let j = 0; j < nodes.length; j++) {
-      arr.push(setCost(i, j));
+      arr.push(setDist(i, j));
     }
 
     newEdges.push(arr);

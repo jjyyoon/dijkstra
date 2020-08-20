@@ -23,7 +23,7 @@ class Playground extends React.Component {
   }
 
   handleResize = ({ target: { innerWidth, innerHeight } }) => {
-    const { useRealDist, resetResult, stopAnimation } = this.props;
+    const { useRealDist, resetResult, stopAnimation, updateGraph } = this.props;
 
     if (useRealDist) {
       resetResult();
@@ -47,6 +47,16 @@ class Playground extends React.Component {
         className="absolute bottom-0"
         viewBox={`${-width / 8} ${-height / 8} ${width} ${height}`}
       >
+        <foreignObject className="w-full h-16 p-4" x={-width / 8} y={-height / 8}>
+          <p>
+            • Drag and drop the nodes<span className="text-gray-600">(points)</span> anywhere you
+            want.
+          </p>
+          <p>
+            • Click the Change Node Settings button at the top right of the page and select a node
+            to be changed.
+          </p>
+        </foreignObject>
         <Repeat>
           {i => <Repeat key={i}>{j => <Path key={`${i}${j}`} sourceId={i} targetId={j} />}</Repeat>}
         </Repeat>

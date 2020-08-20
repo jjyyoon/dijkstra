@@ -2,10 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { getNode, getEdge } from "../redux/selectors";
 
-const Path = ({ id, source, target, edge, useRealDist }) => {
-  if (!edge || source.x > target.x) {
+const Path = ({ sourceId, targetId, source, target, edge, useRealDist }) => {
+  if (!edge || source.x > target.x || (source.x === target.x && sourceId > targetId)) {
     return null;
   }
+
+  const id = "path" + sourceId + targetId;
 
   return (
     <g>
@@ -14,7 +16,7 @@ const Path = ({ id, source, target, edge, useRealDist }) => {
         d={`M ${source.x},${source.y} L ${target.x},${target.y}`}
         className="stroke-current stroke-2 text-purple-500"
       />
-      <text>
+      <text dy="-3">
         <textPath href={"#" + id} startOffset="50%" textAnchor="middle">
           {useRealDist ? edge.toFixed(2) : edge}
         </textPath>
@@ -24,7 +26,6 @@ const Path = ({ id, source, target, edge, useRealDist }) => {
 };
 
 const mapStateToProps = (state, { sourceId, targetId }) => ({
-  id: "path" + sourceId + targetId,
   source: getNode(sourceId)(state),
   target: getNode(targetId)(state),
   edge: getEdge(sourceId, targetId)(state),

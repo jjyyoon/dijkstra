@@ -21,17 +21,17 @@ const Header = ({ useRealDist, isResultSet, changeSetting, resetResult }) => {
     <div className="p-4 pb-0">
       <div className="inline-block">
         <div>
-          <input type="checkbox" checked={useRealDist} onChange={handleChange} />
-          <label>Use Real Distance as a Cost</label>
+          <input type="checkbox" checked={!useRealDist} onChange={handleChange} />
+          <label>Set Your Own Distances</label>
         </div>
         <div>
-          <input type="checkbox" checked={!useRealDist} onChange={handleChange} />
-          <label>Set Your Own Costs</label>
+          <input type="checkbox" checked={useRealDist} onChange={handleChange} />
+          <label>Use Real Distances</label>
         </div>
       </div>
       <div className="float-right relative">
         <CustomButton
-          content="Change Node Setting"
+          content="Change Node Settings"
           simple={true}
           color="red"
           handleClick={handleClick}
