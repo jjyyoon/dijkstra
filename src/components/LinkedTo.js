@@ -5,20 +5,25 @@ import { getNodeLabel, getEdge } from "../redux/selectors";
 
 const LinkedTo = ({ source, target, useRealDist, label, edge, updateEdge, resetResult }) => {
   const handleChange = ({ target: { type, checked, value } }) => {
-    let cost;
+    let dist;
 
     if (type === "checkbox") {
-      cost = +checked;
+      dist = +checked;
     } else {
-      cost = +value <= 20 ? +value : 20;
+      dist = +value <= 20 ? +value : 20;
     }
 
-    updateEdge(source, target, cost);
+    updateEdge(source, target, dist);
     resetResult();
   };
 
   return (
     <div className="flex flex-wrap mb-1 text-sm">
+      {!useRealDist && !target && (
+        <p className="-mt-1 mb-2 text-xs italic text-gray-700">
+          Distance must be between 1 and 20.
+        </p>
+      )}
       <div className="w-7/12">
         <input
           type="checkbox"
@@ -29,7 +34,7 @@ const LinkedTo = ({ source, target, useRealDist, label, edge, updateEdge, resetR
         <label>{label}</label>
       </div>
       <div className="w-5/12">
-        <label>{"Cost: "}</label>
+        <label>{"Dist: "}</label>
         <input
           className="outline-none"
           type="number"

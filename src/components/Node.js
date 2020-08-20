@@ -74,9 +74,15 @@ class Node extends React.Component {
       node: { label, x, y },
       useRealDist
     } = this.props;
+    const { onDrag } = this.state;
 
     return (
-      <g id={"node" + idx} transform={`translate(${x}, ${y})`} onMouseDown={this.handleMouseDown}>
+      <g
+        id={"node" + idx}
+        className={onDrag ? "cursor-grabbing" : "cursor-grab"}
+        transform={`translate(${x}, ${y})`}
+        onMouseDown={this.handleMouseDown}
+      >
         <circle r="5" />
         <text dy={y > 100 ? 15 : -5}>
           {label}

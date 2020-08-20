@@ -15,6 +15,17 @@ module.exports = {
       "outline-blue": "0 0 0 3px rgba(66, 153, 225, 0.5)",
       "outline-red": "0 0 0 3px rgba(245, 101, 101, 1)"
     },
+    cursor: {
+      auto: "auto",
+      default: "default",
+      pointer: "pointer",
+      wait: "wait",
+      text: "text",
+      move: "move",
+      "not-allowed": "not-allowed",
+      grab: "grab",
+      grabbing: "grabbing"
+    },
     fontFamily: {
       sans: [
         "system-ui",

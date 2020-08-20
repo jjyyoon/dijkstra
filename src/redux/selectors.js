@@ -24,16 +24,19 @@ export const getIsResultSet = createSelector(
   (source, target) => source && target
 );
 
-export const getPathInLabel = createSelector([getNodeLabels, getPath], (nodeLabels, path) => {
-  if (!path) {
-    return null;
+export const getPathStr = createSelector(
+  [getNodeLabels, getSource, getTarget, getPath],
+  (nodeLabels, source, target, path) => {
+    if (!path) {
+      return `from ${source} to ${target}`;
+    }
+
+    const pathInLabel = [];
+
+    for (let i = 0; i < path.length; i++) {
+      pathInLabel.push(nodeLabels[path[i]]);
+    }
+
+    return pathInLabel.join(" - ");
   }
-
-  const pathInLabel = [];
-
-  for (let i = 0; i < path.length; i++) {
-    pathInLabel.push(nodeLabels[path[i]]);
-  }
-
-  return pathInLabel.join(" - ");
-});
+);
