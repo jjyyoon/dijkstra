@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateGraph, resetResult } from "../redux/actions";
+import { updateGraph, resetResult, stopAnimation } from "../redux/actions";
 
 import Repeat from "./Repeat";
 import Node from "./Node";
@@ -23,8 +23,13 @@ class Playground extends React.Component {
   }
 
   handleResize = ({ target: { innerWidth, innerHeight } }) => {
-    const { resetResult, updateGraph } = this.props;
-    resetResult();
+    const { useRealDist, resetResult, stopAnimation } = this.props;
+
+    if (useRealDist) {
+      resetResult();
+    } else {
+      stopAnimation();
+    }
 
     const { width, height } = this.state;
     updateGraph((innerWidth * 0.8) / width, (innerHeight * 0.85) / height);
@@ -45,18 +50,19 @@ class Playground extends React.Component {
         <Repeat>
           {i => <Repeat key={i}>{j => <Path key={`${i}${j}`} sourceId={i} targetId={j} />}</Repeat>}
         </Repeat>
-        <Repeat>{idx => <Node key={idx} idx={idx} width={width} height={height} />}</Repeat>
         {shown && <ShowResult />}
+        <Repeat>{idx => <Node key={idx} idx={idx} width={width} height={height} />}</Repeat>
       </svg>
     );
   }
 }
 
-const mapStateToProps = ({ result: { shown } }) => ({ shown });
+const mapStateToProps = ({ graph: { useRealDist }, result: { shown } }) => ({ useRealDist, shown });
 
 const mapDispatchToProps = dispatch => ({
   updateGraph: (forX, forY) => dispatch(updateGraph(forX, forY)),
-  resetResult: () => dispatch(resetResult())
+  resetResult: () => dispatch(resetResult()),
+  stopAnimation: () => dispatch(stopAnimation())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playground);

@@ -35,5 +35,5 @@ export const getPathInLabel = createSelector([getNodeLabels, getPath], (nodeLabe
     pathInLabel.push(nodeLabels[path[i]]);
   }
 
-  return pathInLabel.join("-");
+  return pathInLabel.join(" - ");
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { updateNode, updateEdges, resetResult } from "../redux/actions";
+import { updateNode, updateEdges, resetResult, stopAnimation } from "../redux/actions";
 import { getNode } from "../redux/selectors";
 import { checkBoundary } from "../helpers";
 
@@ -20,8 +20,13 @@ class Node extends React.Component {
   }
 
   handleMouseDown = () => {
-    const { resetResult } = this.props;
-    resetResult();
+    const { useRealDist, resetResult, stopAnimation } = this.props;
+
+    if (useRealDist) {
+      resetResult();
+    } else {
+      stopAnimation();
+    }
 
     window.addEventListener("mousemove", this.handleMouseMove);
     window.addEventListener("mouseup", this.handleMouseUp);
@@ -54,8 +59,11 @@ class Node extends React.Component {
     window.removeEventListener("mousemove", this.handleMouseMove);
     window.removeEventListener("mouseup", this.handleMouseUp);
 
-    const { updateEdges, idx } = this.props;
-    updateEdges(idx);
+    const { useRealDist, updateEdges, idx } = this.props;
+
+    if (useRealDist) {
+      updateEdges(idx);
+    }
 
     this.setState({ onDrag: false, screenCTM: null });
   };
@@ -63,24 +71,32 @@ class Node extends React.Component {
   render() {
     const {
       idx,
-      node: { label, x, y }
+      node: { label, x, y },
+      useRealDist
     } = this.props;
 
     return (
       <g id={"node" + idx} transform={`translate(${x}, ${y})`} onMouseDown={this.handleMouseDown}>
         <circle r="5" />
-        <text dy={y > 100 ? 15 : -5}>{`${label} (${x.toFixed(2)}, ${y.toFixed(2)})`}</text>
+        <text dy={y > 100 ? 15 : -5}>
+          {label}
+          {useRealDist ? `(${x.toFixed(2)}, ${y.toFixed(2)})` : null}
+        </text>
       </g>
     );
   }
 }
 
-const mapStateToProps = (state, { idx }) => ({ node: getNode(idx)(state) });
+const mapStateToProps = (state, { idx }) => ({
+  useRealDist: state.graph.useRealDist,
+  node: getNode(idx)(state)
+});
 
 const mapDispatchToProps = dispatch => ({
   updateNode: (idx, updateInfo) => dispatch(updateNode(idx, updateInfo)),
   updateEdges: idx => dispatch(updateEdges(idx)),
-  resetResult: () => dispatch(resetResult())
+  resetResult: () => dispatch(resetResult()),
+  stopAnimation: () => dispatch(stopAnimation())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Node);

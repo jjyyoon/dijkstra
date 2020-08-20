@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { toggleResultShown } from "../redux/actions";
+import { toggleAnimationShown } from "../redux/actions";
 import { getPathInLabel } from "../redux/selectors";
 
 import CustomButton from "./CustomButton";
 import { ReactComponent as ExclamationOutline } from "../assets/exclamation-outline.svg";
 
-const ResultContainer = ({ source, target, path, shown, toggleResultShown }) => {
+const ResultContainer = ({ useRealDist, source, target, path, shown, toggleAnimationShown }) => {
   if (!path) {
     return (
       <h2 className="mt-2 pt-2 border-t border-gray-300">
@@ -21,28 +21,31 @@ const ResultContainer = ({ source, target, path, shown, toggleResultShown }) => 
       <div>
         <h2>{`The shortest path is ${path}.`}</h2>
         <p className="text-sm italic">
-          *The result would be reset if you resize the browser window or change the position of a
-          node.
+          *The result will reset if you change node settings
+          {useRealDist ? ", resize the browser window or move the position of the nodes." : "."}
         </p>
       </div>
       <CustomButton
         content={`${shown ? "Stop" : "Restart"} Animation`}
         outline={true}
         color="green"
-        handleClick={toggleResultShown}
+        handleClick={toggleAnimationShown}
       />
     </div>
   );
 };
 
 const mapStateToProps = state => {
-  const { source, target, shown } = state.result;
+  const {
+    graph: { useRealDist },
+    result: { source, target, shown }
+  } = state;
 
-  return { source, target, path: getPathInLabel(state), shown };
+  return { useRealDist, source, target, path: getPathInLabel(state), shown };
 };
 
 const mapDispatchToProps = dispatch => ({
-  toggleResultShown: () => dispatch(toggleResultShown())
+  toggleAnimationShown: () => dispatch(toggleAnimationShown())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultContainer);

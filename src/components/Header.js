@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { changeSetting } from "../redux/actions";
+import { changeSetting, resetResult } from "../redux/actions";
 import { getIsResultSet } from "../redux/selectors";
 
 import CustomButton from "./CustomButton";
 import SetLinks from "./SetLinks";
 import ResultContainer from "./ResultContainer";
 
-const Header = ({ useRealDist, isResultSet, changeSetting }) => {
+const Header = ({ useRealDist, isResultSet, changeSetting, resetResult }) => {
   const [showSetting, setShowSetting] = useState(false);
 
-  const handleChange = () => changeSetting();
+  const handleChange = () => {
+    changeSetting();
+    resetResult();
+  };
   const handleClick = () => setShowSetting(!showSetting);
   const handleClose = () => setShowSetting(false);
 
@@ -46,7 +49,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeSetting: () => dispatch(changeSetting())
+  changeSetting: () => dispatch(changeSetting()),
+  resetResult: () => dispatch(resetResult())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

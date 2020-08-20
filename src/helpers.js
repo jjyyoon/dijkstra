@@ -1,21 +1,21 @@
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const labels = [
+  "Bakery",
+  "City Hall",
+  "Dry Cleaner",
+  "Home",
+  "Library",
+  "Museum",
+  "Pub",
+  "Supermarket",
+  "University"
+];
 
 export const generateNodes = (num, maxX, maxY) => {
   const nodes = [];
-  const len = alphabet.length;
 
-  for (let i = 0, label, firstChar; i < num; i++) {
-    if (i < len) {
-      label = alphabet[i];
-    } else if (i % len === 0) {
-      firstChar = alphabet[i / len - 1];
-      label = firstChar + alphabet[0];
-    } else {
-      label = firstChar + alphabet[i % len];
-    }
-
+  for (let i = 0; i < num; i++) {
     nodes.push({
-      label,
+      label: labels[i],
       x: Math.random() * (maxX * 0.75),
       y: Math.random() * (maxY * 0.75)
     });
@@ -24,20 +24,21 @@ export const generateNodes = (num, maxX, maxY) => {
   return nodes;
 };
 
-const generateLinks = nodes => {
-  const randomNum = () => Math.floor(Math.random() * nodes.length);
+const randomNum = maxValue => Math.floor(Math.random() * maxValue);
+
+const generateLinks = nodesCount => {
   const links = {};
 
-  for (let source = 0; source < nodes.length; source++) {
+  for (let source = 0; source < nodesCount; source++) {
     if (!links[source]) {
       links[source] = {};
     }
 
     if (Object.keys(links[source]).length < 2) {
-      const targets = [randomNum(), randomNum()];
+      const targets = [randomNum(nodesCount), randomNum(nodesCount)];
 
       while (targets[0] === source && targets[1] === source) {
-        targets[0] = randomNum();
+        targets[0] = randomNum(nodesCount);
       }
 
       targets.forEach(target => {
@@ -56,31 +57,42 @@ const generateLinks = nodes => {
   return links;
 };
 
-export const generateEdges = nodes => {
-  const edges = [];
-  const links = generateLinks(nodes);
+export const generateEdges = (nodes, useRealDist, edges) => {
+  const newEdges = [];
+
+  if (!edges) {
+    edges = generateLinks(nodes.length);
+  }
+
+  const setCost = (i, j) => {
+    if (!edges[i][j]) {
+      return 0;
+    }
+
+    if (i > j) {
+      return newEdges[j][i];
+    }
+
+    if (!useRealDist) {
+      return 1 + randomNum(20);
+    }
+
+    const source = nodes[i];
+    const target = nodes[j];
+    return Math.hypot(target.x - source.x, target.y - source.y);
+  };
 
   for (let i = 0; i < nodes.length; i++) {
     const arr = [];
 
-    for (let j = 0, r; j < nodes.length; j++) {
-      if (!links[i][j]) {
-        r = 0;
-      } else if (i > j) {
-        r = edges[j][i];
-      } else {
-        const source = nodes[i];
-        const target = nodes[j];
-        r = Math.hypot(target.x - source.x, target.y - source.y);
-      }
-
-      arr.push(r);
+    for (let j = 0; j < nodes.length; j++) {
+      arr.push(setCost(i, j));
     }
 
-    edges.push(arr);
+    newEdges.push(arr);
   }
 
-  return edges;
+  return newEdges;
 };
 
 export const findTheShortestPath = (edges, source, target) => {
