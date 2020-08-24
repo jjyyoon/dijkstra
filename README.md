@@ -1,6 +1,5 @@
 ## Dijkstra's Algorithm Visualizer
-This project implements Dijkstra's Algorithm. It allows users to set distances and finds the shortest path between nodes.  
-[View Online](https://jjyyoon.github.io/#/dijkstra)
+Welcome to Dijkstra's Algorithm Visualizer! This project implements Dijkstra's Algorithm. It allows users to set distances and finds the shortest path between nodes based on the distances. You can access it by clicking [here](https://jjyyoon.github.io/#/dijkstra).
 
 ### How to Run This Project
 1. Download [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
